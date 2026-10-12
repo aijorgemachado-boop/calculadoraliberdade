@@ -1,17 +1,356 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Calculadoras de liberdade financeira da Guia da Bolsa.">
-<title>Calculadoras | Guia da Bolsa</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Descubra quanto você precisa ter para parar de trabalhar sem mudar seu padrão de vida.">
+<meta name="theme-color" content="#0A6B64">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Qual é o seu número?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-:root{color-scheme:light;--bg:#f2f5f4;--paper:#fff;--ink:#102624;--muted:#56706c;--accent:#0a6b64;--line:#d5dfdc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:32px 16px}
-main{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:22px}h1{font-size:clamp(32px,8vw,48px);line-height:1.05;margin:0}p{margin:0;color:var(--muted)}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}a{display:block;background:var(--accent);color:#fff;text-decoration:none;text-align:center;font-weight:650;border-radius:9px;padding:14px}small{color:var(--muted)}
-</style></head><body><main>
-<span>GUIA DA BOLSA · LIBERDADE FINANCEIRA</span><h1>Qual é o seu número?</h1>
-<p>Descubra seu patrimônio de referência e converse com um assessor para traçar um plano para chegar lá.</p>
-<section class="card"><h2>Calculadora do Jorge</h2><p>Simulação de liberdade financeira e planejamento patrimonial.</p><a href="./Jorge/">Acessar calculadora</a></section>
-<section class="card"><h2>Calculadora do Luiz</h2><p>Simulação de liberdade financeira e planejamento patrimonial.</p><a href="./Luiz/">Acessar calculadora</a></section>
-<small>Simulação educativa. As informações enviadas serão usadas para responder à solicitação de contato.</small>
-</main></body></html>
+/* Layout: uma coluna estreita, pensada para o celular de quem escaneou o QR. Os resultados não são exibidos; a análise será feita pelo assessor. */
+:root{
+  --bg:#F2F5F4; --paper:#FFFFFF; --ink:#102624; --muted:#56706C; --line:#D5DFDC;
+  --accent:#0A6B64; --accent-ink:#FFFFFF; --flag:#B4441F; --ok:#2F7D4A; --soft:#E4EEEC;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1716; --paper:#132321; --ink:#E6F0EE; --muted:#93ABA7; --line:#26403C;
+  --accent:#3FB8AD; --accent-ink:#06201E; --flag:#F08A62; --ok:#6CC48A; --soft:#1A302D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1716; --paper:#132321; --ink:#E6F0EE; --muted:#93ABA7; --line:#26403C;
+  --accent:#3FB8AD; --accent-ink:#06201E; --flag:#F08A62; --ok:#6CC48A; --soft:#1A302D; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:28px 48px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3,h4{font-family:var(--display);font-stretch:85%;line-height:1.05;margin:0;text-wrap:balance}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:12px}
+header h1{font-size:clamp(40px,11vw,60px);font-weight:800;letter-spacing:-.01em}
+header p.lead{color:var(--muted);font-size:18px;max-width:34ch}
+section h3{font-size:24px;font-weight:700}
+section{display:flex;flex-direction:column;gap:12px}
+
+/* Formulário */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#leadForm{display:flex;flex-direction:column;gap:30px}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);cursor:pointer}
+.consent input{margin-top:4px;flex:none;width:18px;height:18px;accent-color:var(--accent)}
+.honeypot{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-weight:600;font-size:15px}
+.hint{font-size:13px;color:var(--muted)}
+input[type=text],input[type=tel]{width:100%;font:500 22px/1.2 var(--mono);color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-variant-numeric:tabular-nums}
+input[type=text]::placeholder,input[type=tel]::placeholder{color:var(--muted);opacity:.55}
+input#nome{font-family:var(--body);font-size:19px}
+input[type=text]:focus,input[type=tel]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+
+/* Laudo */
+.laudo{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:22px 20px 18px;display:flex;flex-direction:column;gap:18px;box-shadow:0 1px 0 var(--line),0 12px 28px -18px color-mix(in srgb,var(--ink) 40%,transparent)}
+.laudo-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.laudo-head h2{font-size:22px;font-weight:700}
+.empty{color:var(--muted);font-size:16px;padding:8px 0 4px}
+.curiosity{display:block}
+.next-step{display:block;margin-top:8px;padding:18px 17px;background:var(--soft);border:1px solid var(--accent);border-left:5px solid var(--accent);border-radius:8px;color:var(--ink);font-size:18px;line-height:1.4;font-weight:750;box-shadow:0 6px 20px -16px var(--ink)}
+.next-step .curiosity{font-size:13px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.next-step strong{display:block;font-size:19px;font-weight:800}
+.big{display:flex;flex-direction:column;gap:4px}
+.big .val{font-family:var(--display);font-weight:800;font-stretch:80%;font-size:clamp(44px,13vw,64px);line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+.big .sub{color:var(--muted);font-size:15px}
+.rows{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 0;border-bottom:1px dashed var(--line);align-items:baseline}
+.row .k{font-size:15px;min-width:0}
+.row .k small{display:block;color:var(--muted);font-size:13px}
+.row .v{font-family:var(--mono);font-weight:500;font-size:17px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .v.flag{color:var(--flag)}
+.row .v.ok{color:var(--ok)}
+.ref{display:flex;flex-direction:column;gap:8px}
+.bar{position:relative;height:14px;background:var(--soft);border-radius:2px;overflow:hidden}
+.bar span{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0;transition:width .5s ease}
+.ref-legend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--muted);gap:8px}
+.verdict{font-size:16px;background:var(--soft);padding:12px 14px;border-radius:4px}
+.verdict b{font-weight:600}
+.error{color:var(--flag);font-weight:600}
+
+/* Caixinhas */
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{display:flex;gap:10px;align-items:flex-start;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font-size:15px;line-height:1.3;min-width:0}
+.chip input{width:20px;height:20px;margin:0;accent-color:var(--accent);flex:none}
+.chip:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--paper))}
+.chip:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Próximo passo */
+.opt{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer}
+.opt input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.opt:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,var(--paper))}
+.opt:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.opt .txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.opt h4{font-size:21px;font-weight:700;line-height:1.1}
+.opt p{color:var(--muted);font-size:15px}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;font-weight:600;font-family:inherit;font-size:18px;padding:16px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+footer{display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+footer b{color:var(--ink);font-weight:600}
+@media (max-width:380px){.form,.chips{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Palestra · Liberdade financeira</span>
+    <h1>Qual é o seu número?</h1>
+    <p class="lead">Quanto você precisa ter para parar de trabalhar sem mudar o seu padrão de vida. Quatro campos, um minuto.</p>
+  </header>
+
+  <form id="leadForm" novalidate>
+  <section class="form" aria-label="Seus dados">
+    <div class="field">
+      <label for="idade">Sua idade</label>
+      <input type="text" id="idade" name="idade_atual" inputmode="numeric" placeholder="Ex.: 40" autocomplete="off" required>
+    </div>
+    <div class="field">
+      <label for="parar">Quer parar aos</label>
+      <input type="text" id="parar" name="idade_objetivo" inputmode="numeric" placeholder="Ex.: 65" autocomplete="off" required>
+    </div>
+    <div class="field full">
+      <label for="renda">Renda mensal que deseja ter quando parar</label>
+      <input type="text" id="renda" name="renda_mensal_desejada" inputmode="numeric" placeholder="R$ 0" autocomplete="off" required>
+      <span class="hint">Em valores de hoje. O quanto você gasta por mês costuma ser a melhor referência.</span>
+    </div>
+    <div class="field full">
+      <label for="patri">Quanto tem investido hoje</label>
+      <input type="text" id="patri" name="patrimonio_investido_atual" inputmode="numeric" placeholder="R$ 0" autocomplete="off" required>
+      <span class="hint">Tudo o que está aplicado. Sem contar o imóvel onde você mora.</span>
+    </div>
+  </section>
+
+  <section class="laudo" aria-live="polite">
+    <div class="laudo-head">
+      <h2>O patrimônio para o padrão de vida que você deseja</h2>
+      <span class="eyebrow">Seu número de referência</span>
+    </div>
+    <p class="empty" id="capitalPrompt">Informe a renda mensal desejada para revelar o patrimônio de referência necessário para sustentá-la.</p>
+    <div class="big" id="capitalResult" hidden>
+      <span class="val" id="capitalAlvo">R$ 0</span>
+      <span class="sub">Patrimônio de referência estimado para sustentar a renda desejada.</span>
+    </div>
+    <p class="hint">Referência simplificada pela regra de retirada de 4% ao ano: renda anual desejada dividida por 4%. É uma estimativa, não uma garantia de resultado.</p>
+    <div class="next-step">
+      <span class="curiosity">Saber o número é só o começo.</span>
+      <strong>Envie suas informações pelo WhatsApp para traçarmos um plano para chegar lá.</strong>
+    </div>
+  </section>
+
+  <section>
+    <h3>Quais investimentos você tem hoje?</h3>
+    <p class="hint">Marque todos que tiver. Vai junto na mensagem.</p>
+    <div class="chips" id="chips">
+      <label class="chip"><input type="checkbox" id="i1" name="investimentos" value="Poupança ou conta remunerada"><span>Poupança ou conta remunerada</span></label>
+      <label class="chip"><input type="checkbox" id="i2" name="investimentos" value="Renda fixa (CDB, Tesouro, LCI/LCA)"><span>Renda fixa (CDB, Tesouro, LCI/LCA)</span></label>
+      <label class="chip"><input type="checkbox" id="i3" name="investimentos" value="Previdência privada"><span>Previdência privada</span></label>
+      <label class="chip"><input type="checkbox" id="i4" name="investimentos" value="Ações"><span>Ações</span></label>
+      <label class="chip"><input type="checkbox" id="i5" name="investimentos" value="Fundos imobiliários"><span>Fundos imobiliários</span></label>
+      <label class="chip"><input type="checkbox" id="i6" name="investimentos" value="Fundos de investimento"><span>Fundos de investimento</span></label>
+      <label class="chip"><input type="checkbox" id="i7" name="investimentos" value="Imóvel alugado"><span>Imóvel alugado</span></label>
+      <label class="chip"><input type="checkbox" id="i8" name="investimentos" value="Ainda não invisto"><span>Ainda não invisto</span></label>
+    </div>
+  </section>
+
+  <section>
+    <h3>Próximo passo</h3>
+    <label class="opt">
+      <input type="checkbox" id="optPlan" name="interesses" value="Planejamento financeiro" checked>
+      <span class="txt">
+        <h4>Quero fazer meu planejamento financeiro</h4>
+        <p>Você sai com o seu número, quanto falta e o aporte mensal. Se a sua estrutura estiver boa, eu vou te dizer que está boa.</p>
+      </span>
+    </label>
+    <label class="opt">
+      <input type="checkbox" id="optPainel" name="interesses" value="Acompanhar o mercado e receber os slides">
+      <span class="txt">
+        <h4>Quero acompanhar o nível da piscina</h4>
+        <p>Quanto do dinheiro está na bolsa, Selic e fluxo estrangeiro, com os slides da palestra. E saber quando a piscina encher.</p>
+      </span>
+    </label>
+    <div id="chooser" class="field" hidden>
+      <label>Com quem você quer falar?</label>
+      <div class="chips" id="advList"></div>
+    </div>
+    <div class="field">
+      <label for="nome">Seu nome</label>
+      <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Seu nome" required>
+    </div>
+    <div class="field">
+      <label for="telefone">Seu WhatsApp</label>
+      <input type="tel" id="telefone" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" required>
+      <span class="hint">Usaremos este número para entrar em contato e agendar a conversa.</span>
+    </div>
+    <label class="consent full" for="consent">
+      <input type="checkbox" id="consent" name="autorizacao_contato" value="Sim" required>
+      <span>Autorizo o contato pelo WhatsApp para tratar desta simulação e agendar uma conversa. Entendo que meus dados serão usados para responder a esta solicitação.</span>
+    </label>
+<button class="btn" id="cta" type="submit">Enviar meus dados pelo WhatsApp</button>
+    <p class="hint" id="ctaHint">O WhatsApp abrirá com uma mensagem pronta. Revise e toque em Enviar para compartilhar suas informações.</p>
+    <p class="hint" id="requestStatus" role="status" aria-live="polite"></p>
+  </section>
+  </form>
+<footer>
+    <p id="assinatura"><b>Guia da Bolsa</b> · Assessoria de investimentos</p>
+    <p><b>Premissa do patrimônio de referência.</b> Renda anual desejada dividida por uma taxa de retirada de 4% ao ano. O valor é indicativo e não considera impostos, taxas, volatilidade ou mudanças futuras de renda e rentabilidade. A estratégia e o aporte necessário dependem de uma análise individual.</p>
+    <p>Simulação educativa, sujeita às premissas indicadas. Não é recomendação de investimento nem promessa de rentabilidade. Ao continuar, o WhatsApp abrirá uma mensagem com as informações fornecidas. A mensagem só será enviada depois que você tocar em Enviar no WhatsApp. Não informe senhas, dados de acesso ou documentos.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // O número de destino é necessário para abrir o WhatsApp. Não é exibido como texto na página.
+  const ASSESSOR = { nome: "Luiz", whatsapp: "5521991262915" };
+  const $ = id => document.getElementById(id);
+  const onlyDigits = value => String(value || "").replace(/\D/g, "");
+  const number = value => Number(onlyDigits(value) || 0);
+  const form = $("leadForm");
+
+  function formatMoney(input) {
+    input.addEventListener("input", () => {
+      const digits = onlyDigits(input.value);
+      input.value = digits ? "R$ " + Number(digits).toLocaleString("pt-BR") : "";
+      updateStatus();
+    });
+  }
+  formatMoney($("renda"));
+  formatMoney($("patri"));
+
+  ["idade", "parar"].forEach(id => {
+    $(id).addEventListener("input", event => {
+      event.target.value = onlyDigits(event.target.value).slice(0, 2);
+      updateStatus();
+    });
+  });
+  ["nome", "telefone"].forEach(id => $(id).addEventListener("input", updateStatus));
+  form.addEventListener("change", updateStatus);
+
+  function selectedValues(selector) {
+    return Array.from(document.querySelectorAll(selector + ":checked")).map(input => input.value);
+  }
+
+  function currency(value) {
+    return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value);
+  }
+
+  function updateCapitalReference() {
+    const monthlyIncome = number($("renda").value);
+    const result = $("capitalResult");
+    const prompt = $("capitalPrompt");
+    if (monthlyIncome > 0) {
+      const targetCapital = (monthlyIncome * 12) / 0.04;
+      $("capitalAlvo").textContent = currency(targetCapital);
+      result.hidden = false;
+      prompt.textContent = "Para a renda mensal que você deseja, este é o patrimônio de referência pela regra de retirada de 4% ao ano.";
+    } else {
+      result.hidden = true;
+      prompt.textContent = "Informe a renda mensal desejada para revelar o patrimônio de referência necessário para sustentá-la.";
+    }
+  }
+
+  function updateStatus() {
+    const age = number($("idade").value);
+    const retirementAge = number($("parar").value);
+    const phone = onlyDigits($("telefone").value);
+    const status = $("requestStatus");
+    updateCapitalReference();
+    if (phone.length && (phone.length < 10 || phone.length > 13)) {
+      status.textContent = "Confira o número de WhatsApp e inclua o DDD.";
+    } else if (age && retirementAge && retirementAge <= age) {
+      status.textContent = "A idade desejada para parar deve ser maior que sua idade atual.";
+    } else {
+      status.textContent = "";
+    }
+  }
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    const ageText = $("idade").value.trim();
+    const retirementAgeText = $("parar").value.trim();
+    const incomeText = $("renda").value.trim();
+    const assetsText = $("patri").value.trim();
+    const age = number(ageText);
+    const retirementAge = number(retirementAgeText);
+    const income = number(incomeText);
+    const phone = onlyDigits($("telefone").value);
+    const name = $("nome").value.trim();
+
+    if (!ageText || !retirementAgeText || !incomeText || !assetsText) {
+      $("requestStatus").textContent = "Preencha os quatro campos da simulação.";
+      return;
+    }
+    if (age < 18) {
+      $("requestStatus").textContent = "Informe uma idade válida (18 anos ou mais).";
+      $("idade").focus(); return;
+    }
+    if (retirementAge <= age || retirementAge > 100) {
+      $("requestStatus").textContent = "A idade desejada para parar deve ser maior que sua idade atual e não pode passar de 100 anos.";
+      $("parar").focus(); return;
+    }
+    if (income <= 0) {
+      $("requestStatus").textContent = "Informe uma renda mensal desejada maior que zero.";
+      $("renda").focus(); return;
+    }
+    if (!name) {
+      $("requestStatus").textContent = "Informe seu nome.";
+      $("nome").focus(); return;
+    }
+    if (phone.length < 10 || phone.length > 13) {
+      $("requestStatus").textContent = "Informe um número de WhatsApp válido, incluindo o DDD.";
+      $("telefone").focus(); return;
+    }
+    if (!$ ("consent").checked) {
+      $("requestStatus").textContent = "Marque a autorização para compartilhar os dados e receber contato pelo WhatsApp.";
+      $("consent").focus(); return;
+    }
+
+    const investments = selectedValues('input[name="investimentos"]');
+    const interests = selectedValues('input[name="interesses"]');
+    const message = [
+      "Olá, " + ASSESSOR.nome + ". Gostaria de solicitar uma análise do meu cenário de liberdade financeira.",
+      "",
+      "Nome: " + name,
+      "Meu WhatsApp: " + $("telefone").value.trim(),
+      "Idade atual: " + age,
+      "Idade desejada para parar de trabalhar: " + retirementAge,
+      "Renda mensal desejada (em valores de hoje): " + incomeText,
+      "Patrimônio de referência estimado (retirada de 4% ao ano): " + currency((income * 12) / 0.04),
+      "Patrimônio investido atual (sem contar o imóvel onde moro): " + assetsText,
+      "Investimentos atuais: " + (investments.length ? investments.join(", ") : "Não informado"),
+      "Interesses: " + (interests.length ? interests.join(", ") : "Não informado"),
+      "Autorizo o contato pelo WhatsApp para tratar desta solicitação.",
+      "Origem: Calculadora de liberdade financeira"
+    ].join("\n");
+
+    const url = "https://wa.me/" + ASSESSOR.whatsapp + "?text=" + encodeURIComponent(message);
+    $("requestStatus").textContent = "O WhatsApp abrirá com a mensagem pronta. Revise e toque em Enviar para compartilhar suas informações.";
+    // Abrir dentro da ação direta do usuário aumenta a chance de o navegador permitir a nova aba.
+    const whatsappTab = window.open(url, "_blank", "noopener,noreferrer");
+    if (!whatsappTab) window.location.href = url;
+  });
+
+  // A página pública mostra apenas o patrimônio de referência; projeções detalhadas ficam para a conversa com o assessor.
+  updateCapitalReference();
+})();
+</script>
+
+</body>
+</html>
