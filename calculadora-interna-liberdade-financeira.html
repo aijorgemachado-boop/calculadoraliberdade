@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Calculadora interna | Planejamento de liberdade financeira</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1420;--panel:#121f2e;--panel2:#17283a;--ink:#f0f4f8;--muted:#a7b4c4;--line:#2b3c50;--gold:#d4b36a;--teal:#69c4b7;--red:#ff9c8e;--green:#8ad7a0;--shadow:0 14px 40px rgba(0,0,0,.2)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top right,#14283a 0,transparent 42%),var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:28px 16px 48px}.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}h1,h2,h3,p{margin:0}h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:8px 0 10px;letter-spacing:-.025em}.lead{color:var(--muted);max-width:750px}.tag{border:1px solid var(--line);padding:8px 11px;border-radius:999px;color:var(--muted);font-size:13px;white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(330px,.95fr) minmax(400px,1.25fr);gap:22px;align-items:start}.panel{background:linear-gradient(160deg,var(--panel),#101b28);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);min-width:0}.panel h2{font-size:20px;margin-bottom:16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:13px;color:var(--muted);font-weight:650}input{font:inherit;color:var(--ink);background:#0c1724;border:1px solid var(--line);border-radius:9px;width:100%;padding:11px 12px;outline:none}input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d4b36a24}input[type=number]{font-variant-numeric:tabular-nums}.suffix{position:relative}.suffix input{padding-right:40px}.suffix span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}.hint{font-size:12px;color:var(--muted)}.subhead{grid-column:1/-1;color:var(--gold);font-size:12px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:6px;margin-top:7px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:1px solid transparent;border-radius:9px;padding:11px 15px;font:700 14px system-ui;cursor:pointer}.btn.primary{background:var(--gold);color:#1a1a1a}.btn.secondary{background:transparent;color:var(--ink);border-color:var(--line)}.btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.results{display:grid;gap:15px}.hero-result{background:linear-gradient(120deg,#1d3c45,#172a39);border:1px solid #37645e;border-radius:13px;padding:19px}.hero-result .label{color:#c4d9d8;font-size:13px}.hero-result .value{font-size:clamp(29px,4vw,39px);font-weight:800;letter-spacing:-.03em;margin:4px 0}.hero-result .sub{color:#bdcfce;font-size:13px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px;min-width:0}.metric .label{font-size:12px;color:var(--muted);margin-bottom:7px}.metric .value{font-size:clamp(18px,2.4vw,25px);font-weight:750;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.metric .sub{font-size:12px;color:var(--muted);margin-top:4px}.metric .value.good{color:var(--green)}.metric .value.warn{color:var(--gold)}.details{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:9px}.detail{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;padding-bottom:9px;border-bottom:1px dashed var(--line)}.detail span:first-child{color:var(--muted);font-size:13px}.detail strong{text-align:right;font-variant-numeric:tabular-nums}.note{background:#171f2a;border:1px solid var(--line);border-left:3px solid var(--gold);padding:13px 15px;border-radius:8px;color:var(--muted);font-size:12px}.status{font-size:13px;color:var(--red);min-height:20px}.foot{color:var(--muted);font-size:12px;max-width:1000px}.foot strong{color:var(--ink)}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.panel{padding:18px}}@media(max-width:440px){body{padding:20px 12px}.fields,.metrics{grid-template-columns:1fr}.field.full,.subhead{grid-column:auto}.panel{padding:15px}.tag{white-space:normal}}
+@media print{body{background:#fff;color:#111;padding:0}.wrap{max-width:none}.top .tag,.actions{display:none!important}.panel,.metric,.hero-result,.note{background:#fff!important;color:#111!important;box-shadow:none;border:1px solid #bbb}.lead,.hint,label,.metric .label,.metric .sub,.hero-result .label,.hero-result .sub,.foot,.detail span:first-child{color:#444!important}input{background:#fff!important;color:#111!important;border:1px solid #aaa}.layout{grid-template-columns:1fr 1fr}.panel{break-inside:avoid} .hero-result .value,.metric .value{color:#111!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><div class="eyebrow">Uso interno · Planejamento patrimonial</div><h1>Calculadora de liberdade financeira</h1><p class="lead">Projete o patrimônio necessário, compare com a trajetória atual e estime o aporte mensal para uma renda de aposentadoria. Os cálculos rodam neste arquivo, no próprio navegador; os dados não são enviados nem salvos automaticamente.</p></div>
+    <span class="tag">Ferramenta local · sem integração externa</span>
+  </header>
+  <div class="layout">
+    <section class="panel" aria-labelledby="inputs-title">
+      <h2 id="inputs-title">Dados do cliente e premissas</h2>
+      <div class="fields">
+        <div class="field full"><label for="cliente">Nome do cliente (opcional)</label><input id="cliente" type="text" placeholder="Nome para identificar a simulação" autocomplete="off"></div>
+        <div class="subhead">Horizonte e objetivo</div>
+        <div class="field"><label for="idade">Idade atual</label><input id="idade" type="number" min="18" max="100" step="1" value="40"></div>
+        <div class="field"><label for="aposenta">Idade desejada para aposentadoria</label><input id="aposenta" type="number" min="18" max="110" step="1" value="65"></div>
+        <div class="field"><label for="idadeFinal">Idade final do planejamento</label><input id="idadeFinal" type="number" min="19" max="120" step="1" value="95"><span class="hint">Até que idade a renda deve durar.</span></div>
+        <div class="field"><label for="renda">Renda mensal desejada, em valores de hoje</label><div class="suffix"><input id="renda" type="number" min="0" step="100" value="10000"><span>R$</span></div></div>
+        <div class="field full"><label for="patrimonio">Patrimônio financeiro investido hoje</label><div class="suffix"><input id="patrimonio" type="number" min="0" step="1000" value="500000"><span>R$</span></div></div>
+        <div class="field full"><label for="aporte">Aporte mensal atual, em valores de hoje</label><div class="suffix"><input id="aporte" type="number" min="0" step="100" value="3000"><span>R$</span></div><span class="hint">Usado para projetar o cenário atual e comparar com o aporte necessário.</span></div>
+        <div class="subhead">Premissas econômicas</div>
+        <div class="field"><label for="rentabilidade">Rentabilidade nominal média anual</label><div class="suffix"><input id="rentabilidade" type="number" min="0" max="100" step="0.1" value="8"><span>% a.a.</span></div></div>
+        <div class="field"><label for="inflacao">Inflação média anual</label><div class="suffix"><input id="inflacao" type="number" min="0" max="50" step="0.1" value="4"><span>% a.a.</span></div></div>
+        <div class="field full"><label for="retirada">Taxa de retirada anual para referência patrimonial</label><div class="suffix"><input id="retirada" type="number" min="0.1" max="15" step="0.1" value="4"><span>% a.a.</span></div><span class="hint">Referência de patrimônio equivalente a renda anual dividida pela taxa escolhida. Não é garantia de sustentabilidade.</span></div>
+      </div>
+      <div class="actions"><button class="btn primary" id="recalcular" type="button">Calcular cenário</button><button class="btn secondary" id="imprimir" type="button">Imprimir / salvar PDF</button><button class="btn secondary" id="limpar" type="button">Limpar dados</button></div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+    <section class="panel" aria-labelledby="results-title">
+      <h2 id="results-title">Resultado da simulação</h2>
+      <div class="results" aria-live="polite">
+        <div class="hero-result"><div class="label">Patrimônio-alvo para sustentar a renda até a idade final, em reais de hoje</div><div class="value" id="capitalAlvo">R$ —</div><div class="sub" id="clienteResumo">Premissas reais, saques mensais e horizonte informado.</div></div>
+        <div class="metrics">
+          <div class="metric"><div class="label">Rentabilidade real anual estimada</div><div class="value" id="retornoReal">—</div><div class="sub">Descontada a inflação pelo método exato.</div></div>
+          <div class="metric"><div class="label">Aporte mensal necessário</div><div class="value" id="aporteNecessario">R$ —</div><div class="sub">Em valores de hoje, reajustado pela inflação na prática.</div></div>
+          <div class="metric"><div class="label">Patrimônio projetado com o aporte atual</div><div class="value" id="patrimonioProjetado">R$ —</div><div class="sub">Em poder de compra de hoje, na idade desejada.</div></div>
+          <div class="metric"><div class="label">Renda mensal projetada pelo plano atual</div><div class="value" id="rendaProjetada">R$ —</div><div class="sub">Em valores de hoje, até a idade final informada.</div></div>
+        </div>
+        <div class="details">
+          <div class="detail"><span>Anos até a aposentadoria</span><strong id="anosAcumulacao">—</strong></div>
+          <div class="detail"><span>Período de renda na aposentadoria</span><strong id="anosRetirada">—</strong></div>
+          <div class="detail"><span>Renda mensal desejada em valor nominal na aposentadoria</span><strong id="rendaNominal">—</strong></div>
+          <div class="detail"><span>Patrimônio-alvo em valor nominal na aposentadoria</span><strong id="capitalNominal">—</strong></div>
+          <div class="detail"><span>Patrimônio de referência pela taxa de retirada escolhida</span><strong id="capital4pct">—</strong></div>
+          <div class="detail"><span>Diferença entre projeção atual e meta</span><strong id="diferenca">—</strong></div>
+          <div class="detail"><span>Ajuste de aporte em relação ao valor atual</span><strong id="ajusteAporte">—</strong></div>
+        </div>
+        <div class="note"><strong>Como interpretar:</strong> o patrimônio-alvo principal é calculado para financiar retiradas mensais constantes em poder de compra até a idade final escolhida, assumindo uma rentabilidade real constante durante a aposentadoria e saldo próximo de zero no fim do horizonte. A referência pela taxa de retirada é uma comparação separada. Os dois resultados são estimativas, não garantias.</div>
+      </div>
+    </section>
+  </div>
+  <p class="foot"><strong>Limitações:</strong> projeções simplificadas, sem impostos, taxas, volatilidade, sequência de retornos, mudanças de renda, previdência pública, herança ou patrimônio imobiliário. A rentabilidade real é calculada por (1 + retorno nominal) ÷ (1 + inflação) − 1. Os aportes são tratados como constantes em poder de compra; na prática, o valor nominal deve ser reajustado pela inflação para manter esse poder de compra. Não substitui um planejamento financeiro completo.</p>
+</div>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const ids = ['cliente','idade','aposenta','idadeFinal','renda','patrimonio','aporte','rentabilidade','inflacao','retirada'];
+  const money = (v) => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(Number.isFinite(v) ? v : 0);
+  const signedMoney = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + money(Math.abs(v));
+  const pct = (v) => new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(v) + '%';
+  const num = (id) => Number($(id).value);
+  const setText = (id, text) => { $(id).textContent = text; };
+  function futureValueFactor(monthlyRate, months) {
+    if (months <= 0) return 0;
+    if (Math.abs(monthlyRate) < 1e-10) return months;
+    return (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate;
+  }
+  function presentValueFactor(monthlyRate, months) {
+    if (months <= 0) return 0;
+    if (Math.abs(monthlyRate) < 1e-10) return months;
+    return (1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate;
+  }
+  function calculate() {
+    const age = num('idade'), retireAge = num('aposenta'), endAge = num('idadeFinal');
+    const income = num('renda'), principal = num('patrimonio'), contribution = num('aporte');
+    const nominal = num('rentabilidade') / 100, inflation = num('inflacao') / 100, withdrawal = num('retirada') / 100;
+    const status = $('status'); status.textContent = '';
+    if (!Number.isFinite(age) || !Number.isFinite(retireAge) || !Number.isFinite(endAge) || age < 18 || age > 100 || retireAge <= age || retireAge > 110 || endAge <= retireAge || endAge > 120) {
+      status.textContent = 'Confira as idades: a aposentadoria deve ser posterior à idade atual, e a idade final deve ser posterior à aposentadoria.'; return;
+    }
+    if (![income,principal,contribution,nominal,inflation,withdrawal].every(Number.isFinite) || income <= 0 || principal < 0 || contribution < 0 || nominal < 0 || nominal > 1 || inflation < 0 || inflation > .5 || withdrawal <= 0 || withdrawal > .15) {
+      status.textContent = 'Confira os valores financeiros e as premissas. A renda precisa ser maior que zero; os demais valores devem respeitar os limites dos campos.'; return;
+    }
+    const yearsToRetire = retireAge - age;
+    const yearsInRetirement = endAge - retireAge;
+    const monthsToRetire = Math.round(yearsToRetire * 12);
+    const retirementMonths = Math.round(yearsInRetirement * 12);
+    const realAnnual = (1 + nominal) / (1 + inflation) - 1;
+    const realMonthly = Math.pow(1 + realAnnual, 1/12) - 1;
+    if (!Number.isFinite(realMonthly) || realMonthly <= -1) {
+      status.textContent = 'As premissas geraram uma taxa real inválida. Revise retorno e inflação.'; return;
+    }
+    // Capital que financia renda real mensal até a idade final, com saques no fim de cada mês.
+    const retirementPVFactor = presentValueFactor(realMonthly, retirementMonths);
+    const target = income * retirementPVFactor;
+    const accumulationFactor = futureValueFactor(realMonthly, monthsToRetire);
+    const futurePrincipal = principal * Math.pow(1 + realMonthly, monthsToRetire);
+    const neededContribution = accumulationFactor > 0 ? Math.max(0, (target - futurePrincipal) / accumulationFactor) : 0;
+    const projected = futurePrincipal + contribution * accumulationFactor;
+    const projectedIncome = retirementPVFactor > 0 ? projected / retirementPVFactor : 0;
+    const nominalInflationFactor = Math.pow(1 + inflation, yearsToRetire);
+    const targetNominal = target * nominalInflationFactor;
+    const incomeNominal = income * nominalInflationFactor;
+    const referenceTarget = income * 12 / withdrawal;
+    const difference = projected - target;
+    const additionalContribution = neededContribution - contribution;
+    const client = $('cliente').value.trim();
+    setText('capitalAlvo', money(target));
+    setText('clienteResumo', `${client ? 'Cliente: ' + client + ' · ' : ''}${yearsInRetirement} anos de renda planejada, com retiradas mensais e valores corrigidos pela inflação.`);
+    setText('retornoReal', pct(realAnnual * 100));
+    setText('aporteNecessario', money(neededContribution));
+    setText('patrimonioProjetado', money(projected));
+    setText('rendaProjetada', money(projectedIncome));
+    setText('anosAcumulacao', `${yearsToRetire} anos (${monthsToRetire} meses)`);
+    setText('anosRetirada', `${yearsInRetirement} anos (${retirementMonths} meses)`);
+    setText('rendaNominal', money(incomeNominal) + '/mês');
+    setText('capitalNominal', money(targetNominal));
+    setText('capital4pct', money(referenceTarget));
+    setText('diferenca', signedMoney(difference));
+    setText('ajusteAporte', additionalContribution > 1 ? `Aumentar em ${money(additionalContribution)}/mês` : additionalContribution < -1 ? `Pode reduzir em ${money(Math.abs(additionalContribution))}/mês` : 'Aporte atual próximo do necessário');
+    $('diferenca').style.color = difference >= 0 ? 'var(--green)' : 'var(--red)';
+    $('ajusteAporte').style.color = additionalContribution > 1 ? 'var(--gold)' : additionalContribution < -1 ? 'var(--green)' : 'var(--ink)';
+  }
+  $('recalcular').addEventListener('click', calculate);
+  $('imprimir').addEventListener('click', () => { calculate(); if (!$('status').textContent) window.print(); });
+  $('limpar').addEventListener('click', () => {
+    ids.forEach(id => { if (id === 'cliente') $(id).value = ''; else if (id === 'idade') $(id).value = ''; else if (id === 'aposenta') $(id).value = ''; else if (id === 'idadeFinal') $(id).value = '95'; else if (id === 'renda' || id === 'patrimonio' || id === 'aporte') $(id).value = '0'; else if (id === 'rentabilidade' || id === 'inflacao') $(id).value = '0'; else if (id === 'retirada') $(id).value = '4'; });
+    calculate();
+  });
+  ids.forEach(id => $(id).addEventListener('input', calculate));
+  calculate();
+})();
+</script>
+</body>
+</html>
